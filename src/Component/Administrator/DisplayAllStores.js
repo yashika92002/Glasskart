@@ -70,6 +70,7 @@ export default function DisplayAllStores() {
     setPicture({ filename: URL.createObjectURL(event.target.files[0]), bytes: event.target.files[0] })
     setBtnStatus(true)
   }
+  alert("hello")
 
   const fetchAllStates = async () => {
     var list = await getData('stores/fetchallstates')
