@@ -13,9 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddCategory from "./AddCategory";
-import { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
-
+import MainPage from "./MainPage";
+import  { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -45,13 +44,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   }
 }))
-export default function DisplayAllCategory(props) {
+export default function DisplayMainPage(props) {
   var classes = useStyles()
-  const [categoryList, setCategoryList] = useState([])
+  const [mainPageList, setMainPageList] = useState([])
 
   const [open, setOpen] = React.useState(false);
-  const [categoryId, setCategoryId] = useState("")
-  const [categoryName,setCategoryName] = useState("")
+  const [mainPageId, setMainPageId] = useState("")
+  const [position,setPosition] = useState("")
+  const [status,setStatus] = useState("")
   const [picture, setPicture] = useState({ filename: '', bytes: '' })
   const [oldPicture, setOldPicture] = useState("")
   const [btnStatus, setBtnStatus] = useState(false)
@@ -84,37 +84,41 @@ export default function DisplayAllCategory(props) {
 
   const handleSavePicture = async () => {
     var formData = new FormData()
-    formData.append("categoryid", categoryId)
+    formData.append("mainpageid", mainPageId)
     formData.append("picture", picture.bytes)
     var config = { headers: { "Content-Type": "multipart/form-data" } }
-    var result = await postDataAndImage('category/editcategorypicture', formData, config)
+    var result = await postDataAndImage('mainpage/editmainpagepicture', formData, config)
 
     if (result) {
       Swal.fire({
         imageWidth: 200,
-        imageUrl: '/glasscart.png',
+        imageUrl: '/glasskart9.png',
         title: 'GlassKart.com',
-        text: 'Picture Updated Successfully'
+        text: 'MainPage Picture Updated Successfully'
       })
     }
     else {
       Swal.fire({
         imageWidth: 200,
-        imageUrl: '/glasscart.png',
+        imageUrl: '/glasskart9.png',
         title: 'GlassKart.com',
-        text: 'Fail to edit picture..'
+        text: 'Fail to edit mainpage picture..'
       })
     }
     setOpen(false)
 setBtnStatus(false)
-fetchAllCategories()
+fetchAllMainPage()
   }
 
   const handleSubmit = async () => {
     var err = false
-    if (isEmpty(categoryName)) {
+    if (isEmpty(position)) {
       err = true;
-      toastMessage("Please Enter The Category Name!")
+      toastMessage("Please Enter The Position!")
+    }
+    if (isEmpty(status)) {
+      err = true;
+      toastMessage("Please Select The Status!")
     }
     if (isEmpty(picture.filename)) {
       err = true;
@@ -122,52 +126,53 @@ fetchAllCategories()
     }
     
     if (!err) {
-      var body = { "categoryid": categoryId, "categoryname": categoryName }
-      var result = await postData('category/updatecategorydata', body)
+      // alert(mainPageId)
+      var body = { "mainpageid": mainPageId, "position": position , "status": status}
+      var result = await postData('mainpage/updatemainpagedata', body)
 
       if (result) {
         Swal.fire({
           imageWidth: 200,
-          imageUrl: '/glasscart.png',
+          imageUrl: '/glasskart9.png',
           title: 'GlassKart.com',
-          text: 'Record Updated Successfully'
+          text: 'MainPage Updated Successfully'
         })
       }
       else {
         Swal.fire({
           imageWidth: 200,
-          imageUrl: '/glasscart.png',
+          imageUrl: '/glasskart9.png',
           title: 'GlassKart.com',
-          text: 'Fail to update record'
+          text: 'Fail to update mainpage'
         })
       }
       setOpen(false)
     }
-    fetchAllCategories()
+    fetchAllMainPage()
   }
-  const handleDeleteCategory=async(data)=>{
-var body={categoryid:data.categoryid}
+  const handleDeleteMainPage=async(data)=>{
+var body={mainpageid:data.mainpageid}
 Swal.fire({
   imageWidth: 200,
-  imageUrl: '/glasscart.png',
+  imageUrl: '/glasskart9.png',
   title: 'GlassKart.com',
-  text: 'Are you sure to delete selected category??',
+  text: 'Are you sure to delete selected MainPage??',
   showCancelButton: true,
   confirmButtonText: 'Yes, delete it!',
   cancelButtonText: 'No, keep it'
 }).then(async(result) => {
   if (result.isConfirmed) {
-    var result=await postData("category/deletecategory",body)
+    var result=await postData("mainpage/deletemainpage",body)
     if(result)
     Swal.fire(
       'Deleted!',
-      'Your category has been deleted.',
+      'Your MainPage has been deleted.',
       'success'
     )
     else
       Swal.fire(
         'FAIL!!!!',
-        'Server error fail to delete category',
+        'Server error fail to delete mainpage',
         'error'
         )
     
@@ -176,18 +181,19 @@ Swal.fire({
   } else if (result.dismiss === Swal.DismissReason.cancel) {
     Swal.fire(
       'Cancelled',
-      'Your category is safe :)',
+      'Your mainpage is safe :)',
       'error'
     )
   }
-  fetchAllCategories()
+  fetchAllMainPage()
 })
 
   }
 
   const handleClickOpen = (data) => {
-    setCategoryId(data.categoryid)
-    setCategoryName(data.categoryname)
+    setMainPageId(data.mainpageid)
+    setPosition(data.position)
+    setStatus(data.status)
     setPicture({ filename: `${ServerURL}/images/${data.picture}`, bytes: "" })
     setOpen(true);
   };
@@ -195,14 +201,14 @@ Swal.fire({
   const handleClose = () => {
     setOpen(false);
   };
-  const categoryDialog = () => {
+  const mainPageDialog = () => {
     return (
       <div>
       
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title"> <div style={{ width: 480 }}>
             <div style={{ fontSize: 20, fontWeight: "bold", letterSpacing: 1, }}>
-              <span><img src="/glasscart.png" width="40" /></span><span>Edit Category</span>
+              <span><img src="/glasskart9.png" width="40" /></span><span>Edit MainPage</span>
             </div>
 
           </div></DialogTitle>
@@ -213,10 +219,30 @@ Swal.fire({
 
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <TextField variant="outlined" label="Category Name" fullWidth value={categoryName}
-                      onChange={(event) => setCategoryName(event.target.value)}
+                    <TextField variant="outlined" label="Position" fullWidth value={position}
+                      onChange={(event) => setPosition(event.target.value)}
                     />
                   </Grid>
+
+                  <Grid item xs={12}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="outlined-age-native-simple" >Status</InputLabel>
+              <Select
+                onChange={(event) => setStatus(event.target.value)}
+                native
+                value={status}
+                label="Select Status"
+                inputProps={{
+                  name: 'age',
+                  id: 'outlined-age-native-simple',
+                }}
+              >
+                <option aria-label="None" value="" />
+                <option >Activate</option>
+                <option >Deactivate</option>
+              </Select>
+            </FormControl>
+          </Grid>
                   
 
                   <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column" }}>
@@ -243,7 +269,7 @@ Swal.fire({
                   </Grid>
 
                   <Grid item sm={12}>
-                    <Button style={{ background: "#22a6b3" }} fullWidth variant="contained" color="primary" onClick={() => handleSubmit()}>Edit Category</Button>
+                    <Button style={{ background: "#22a6b3" }} fullWidth variant="contained" color="primary" onClick={() => handleSubmit()}>Edit MainPage</Button>
                   </Grid>
                 </Grid>
 
@@ -272,13 +298,13 @@ Swal.fire({
     );
   };
 
-  const fetchAllCategories = async () => {
-    var list = await getData("category/fetchallcategories")
-    setCategoryList(list.data)
+  const fetchAllMainPage = async () => {
+    var list = await getData("mainpage/fetchallmainpage")
+    setMainPageList(list.data)
   }
 
   useEffect(function () {
-    fetchAllCategories()
+    fetchAllMainPage()
   }, [])
 
   function SimpleAction() {
@@ -290,31 +316,35 @@ Swal.fire({
       title={
         <div>
           
-          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddCategory/>)} startIcon={<AddCircleOutlineRounded/>}>Add Category</Button>
+          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<MainPage/>)} startIcon={<AddCircleOutlineRounded/>}>Add MainPage Pictures</Button>
         </div>
       }
         columns={[
-          { title: 'ID', field: 'categoryid' },
+          { title: 'ID', field: 'mainpageid' },
           {
-            title: 'Category Name',
-            render: rowData => <div><b>{rowData.categoryname}</b></div>
+            title: 'Position',
+            render: rowData => <div><b>{rowData.position}</b></div>
+          },
+          {
+            title: 'Status',
+            render: rowData => <div><b>{rowData.status}</b></div>
           },
           {
             title: 'Picture',
             render: rowData => <img style={{ width: 50, height: 50, borderRadius: 10 }} src={`${ServerURL}/images/${rowData.picture}`} />
           }
         ]}
-        data={categoryList}
+        data={mainPageList}
         actions={[
           {
             icon: 'edit',
-            tooltip: 'Edit Category',
+            tooltip: 'Edit MainPage',
             onClick: (event, rowData) => handleClickOpen(rowData)
           },
           {
             icon: 'delete',
-            tooltip: 'Delete Category',
-            onClick: (event, rowData) => handleDeleteCategory(rowData)
+            tooltip: 'Delete MainPage',
+            onClick: (event, rowData) => handleDeleteMainPage(rowData)
           }
         ]}
       />
@@ -327,7 +357,7 @@ Swal.fire({
       <div className={classes.subdiv}>
         {SimpleAction()}
       </div>
-      {categoryDialog()}
+      {mainPageDialog()}
     </div>
 
   )

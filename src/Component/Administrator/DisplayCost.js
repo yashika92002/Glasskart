@@ -10,7 +10,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MaterialTable from "material-table"
+import MaterialTable from "material-table";
+import AddPrice from "./AddPrice";
+import { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
 // import Geocode from "react-geocode";
 
 
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
   }))
 
-  export default function DisplayCost() {
+  export default function DisplayCost(props) {
     var classes = useStyles()
     const [priceList, setPriceList] = useState([])
     const [minPrice, setMinPrice] = useState("")
@@ -227,7 +229,12 @@ const useStyles = makeStyles((theme) => ({
           <MaterialTable
     
     
-            title="😎Our Prices"
+            title={
+              <div>
+                
+                <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddPrice/>)} startIcon={<AddCircleOutlineRounded/>}>Add Price</Button>
+              </div>
+            }
             columns={[
               { title: 'ID', field: 'priceid' },
               {

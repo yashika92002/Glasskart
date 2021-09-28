@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import AddShape from "./AddShape";
+import { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   }
 }))
-export default function DisplayShape() {
+export default function DisplayShape(props) {
   var classes = useStyles()
   const [shapeList, setShapeList] = useState([])
 
@@ -310,7 +312,12 @@ Swal.fire({
       <MaterialTable
 
 
-        title="😎Our Shapes"
+      title={
+        <div>
+          
+          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddShape/>)} startIcon={<AddCircleOutlineRounded/>}>Add Shapes</Button>
+        </div>
+      }
         columns={[
           { title: 'ID', field: 'shapeid' },
           {

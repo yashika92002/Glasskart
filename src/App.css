@@ -6,6 +6,10 @@
   height: 40vmin;
   pointer-events: none;
 }
+.myreact-icons {
+  color: red;
+  height: 2em;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

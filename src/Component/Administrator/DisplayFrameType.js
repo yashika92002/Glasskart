@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import AddFrameType from "./AddFrameType";
+import  { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   }
 }))
-export default function DisplayFrameType() {
+export default function DisplayFrameType(props) {
   var classes = useStyles()
   const [frameList, setFrameList] = useState([])
 
@@ -310,7 +312,12 @@ Swal.fire({
       <MaterialTable
 
 
-        title="😎Our Frame"
+      title={
+        <div>
+          
+          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddFrameType/>)} startIcon={<AddCircleOutlineRounded/>}>Add FrameType</Button>
+        </div>
+      }
         columns={[
           { title: 'ID', field: 'frameid' },
           {

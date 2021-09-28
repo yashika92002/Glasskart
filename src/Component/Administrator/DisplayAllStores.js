@@ -13,6 +13,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { MTableToolbar } from "material-table";
+import { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
+import AddCategory from "./AddCategory";
+import AddStoreCity from "./AddStoreCity";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -43,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   }
 
 }))
-export default function DisplayAllStores() {
+export default function DisplayAllStores(props) {
   var classes = useStyles()
   var [storeList, setStoreList] = useState([])
 
@@ -70,7 +75,6 @@ export default function DisplayAllStores() {
     setPicture({ filename: URL.createObjectURL(event.target.files[0]), bytes: event.target.files[0] })
     setBtnStatus(true)
   }
-  alert("hello")
 
   const fetchAllStates = async () => {
     var list = await getData('stores/fetchallstates')
@@ -454,7 +458,12 @@ Swal.fire({
       <MaterialTable
 
 
-        title="😎Our Stores"
+        title={
+          <div>
+            
+            <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddStoreCity/>)} startIcon={<AddCircleOutlineRounded/>}>Add Stores</Button>
+          </div>
+        }
         columns={[
           { title: 'ID', field: 'storeid' },
           {

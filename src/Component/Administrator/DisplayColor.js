@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import AddColor from "./AddColor";
+import  { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   }
 }))
-export default function DisplayColor() {
+export default function DisplayColor(props) {
   var classes = useStyles()
   const [colorList, setColorList] = useState([])
 
@@ -310,7 +312,12 @@ Swal.fire({
       <MaterialTable
 
 
-        title="😎Our Colors"
+      title={
+        <div>
+          
+          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<AddColor/>)} startIcon={<AddCircleOutlineRounded/>}>Add Color</Button>
+        </div>
+      }
         columns={[
           { title: 'ID', field: 'colorid' },
           {

@@ -179,6 +179,17 @@ export default function AddStoreCity(props) {
           title: 'GlassKart.com',
           text: 'Record Submitted Successfully'
         })
+        setState('');
+        setCity('');
+        setStoreName('');
+        setLandmark('');
+        setLatitutde('');
+        setLongitude('');
+        setAddressOne('');
+        setAddressTwo('');
+        setEmailAddress('');
+        setContactNumber('');
+        setPicture({filename:'' ,bytes:''})
       }
       else {
         Swal.fire({
@@ -210,7 +221,7 @@ export default function AddStoreCity(props) {
               <Select
                 labelId="state-id"
                 id="stateid"
-                // value={age}
+                value={state}
                 onChange={(event) => setState(event.target.value)}
                 label="Select State"
               >
@@ -222,27 +233,27 @@ export default function AddStoreCity(props) {
           </Grid>
           <Grid item xs={6}>
             <TextField variant="outlined" label="City" fullWidth
-              onChange={(event) => setCity(event.target.value)}
+              onChange={(event) => setCity(event.target.value)} value={city}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" label="Store Name" fullWidth
-              // error={error}
-              onChange={(event) => setStoreName(event.target.value)}
+              // error={error} 
+              onChange={(event) => setStoreName(event.target.value)} value={storeName}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Address Line 1" fullWidth
+            <TextField variant="outlined" label="Address Line 1" fullWidth value={addressOne}
               onChange={(event) => setAddressOne(event.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Address Line 2" fullWidth
+            <TextField variant="outlined" label="Address Line 2" fullWidth value={addressTwo}
               onChange={(event) => setAddressTwo(event.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Landmark" fullWidth
+            <TextField variant="outlined" label="Landmark" fullWidth value={landmark}
               onChange={(event) => setLandmark(event.target.value)}
             />
           </Grid>
@@ -257,18 +268,18 @@ export default function AddStoreCity(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Button variant="contained" fullWidth
+            <Button variant="contained" fullWidth 
               style={{ background: "#10ac84", color: "#FFF", fontSize: 16, padding: 12 }}
             //  onClick={()=>getLatLng()}
             >Get Location</Button>
           </Grid>
           <Grid item xs={6}>
-            <TextField variant="outlined" label="Contact Number" fullWidth
+            <TextField variant="outlined" label="Contact Number" fullWidth value={contactNumber}
               onChange={(event) => setContactNumber(event.target.value)}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField variant="outlined" label="Email Address" fullWidth
+            <TextField variant="outlined" label="Email Address" fullWidth value={emailAddress}
               onChange={(event) => setEmailAddress(event.target.value)}
             />
           </Grid>
