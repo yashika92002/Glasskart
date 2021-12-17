@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import { getData, postData,postDataAndImage, ServerURL } from "../FetchNodeServices";
+import { getData, postData, postDataAndImage, ServerURL } from "../FetchNodeServices";
 import Button from '@material-ui/core/Button';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Menu from '@material-ui/core/Menu';
@@ -27,26 +27,26 @@ export default function ProductList(props) {
   const [colorList, setColorList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [priceList, setPriceList] = useState([]);
-  const [size , setSize] = useState([]);
-  const [gender , setGender] = useState([]);
+  const [size, setSize] = useState([]);
+  const [gender, setGender] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [products , setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
 
-  const displayProducts=()=>{
-   return products.map((item) => {
-   return(
+  const displayProducts = () => {
+    return products.map((item) => {
+      return (
 
-<ProductComponent product={item} history={props.history}/>
-   )
+        <ProductComponent product={item} history={props.history} />
+      )
 
     })
-    
+
   }
 
   const fetchAllProducts = async () => {
-    var body={gender:props.location.state.gender,categoryid:props.location.state.categoryid}
-    var result = await postData("product/fetchallproductsbygender",body);
+    var body = { gender: props.location.state.gender, categoryid: props.location.state.categoryid }
+    var result = await postData("product/fetchallproductsbygender", body);
     setProducts(result.data)
   }
 
@@ -75,21 +75,21 @@ export default function ProductList(props) {
     console.log(framesdata)
     setFrameList(framesdata)
   }
-  
-  const fetchAllSize=()=>{
-    var list = [{'sizeid':'s','size':"Small"},{'sizeid':'m','size':"Medium"},{'sizeid':'l','size':"Large"}]
-    var sizedata={}
-    list.map((item)=>{
-      sizedata[item.sizeid]={...item,chkstatus:false}
+
+  const fetchAllSize = () => {
+    var list = [{ 'sizeid': 's', 'size': "Small" }, { 'sizeid': 'm', 'size': "Medium" }, { 'sizeid': 'l', 'size': "Large" }]
+    var sizedata = {}
+    list.map((item) => {
+      sizedata[item.sizeid] = { ...item, chkstatus: false }
     })
     setSize(sizedata)
   }
 
-  const fetchAllGender=()=>{
-    var list = [{'genderid':'m','gender':"Male"},{'genderid':'f','gender':"Female"}]
-    var genderdata={}
-    list.map((item)=>{
-      genderdata[item.genderid]={...item,chkstatus:false}
+  const fetchAllGender = () => {
+    var list = [{ 'genderid': 'm', 'gender': "Male" }, { 'genderid': 'f', 'gender': "Female" }]
+    var genderdata = {}
+    list.map((item) => {
+      genderdata[item.genderid] = { ...item, chkstatus: false }
     })
     setGender(genderdata)
   }
@@ -170,27 +170,27 @@ export default function ProductList(props) {
 
       case '3':
 
-return Object.values(size).map((item)=>{
-  return (
-    <FormGroup>
-      <MenuItem style={{ display: 'flex', flexDirection: "row" }}
-        value={item.sizeid}>
-        <FormControlLabel
-          control={<Checkbox checked={item.chkstatus} onChange={(event) => handleSizeChange(event, item)} />}
-          label={item.size}
-        />
+        return Object.values(size).map((item) => {
+          return (
+            <FormGroup>
+              <MenuItem style={{ display: 'flex', flexDirection: "row" }}
+                value={item.sizeid}>
+                <FormControlLabel
+                  control={<Checkbox checked={item.chkstatus} onChange={(event) => handleSizeChange(event, item)} />}
+                  label={item.size}
+                />
 
-      </MenuItem>
-    </FormGroup>
-  )
-})
+              </MenuItem>
+            </FormGroup>
+          )
+        })
 
       case '4':
 
         return Object.values(colorList).map((item) => {
           return (
             <FormGroup>
-              <MenuItem style={{ display: 'flex', flexDirection: "row"}}
+              <MenuItem style={{ display: 'flex', flexDirection: "row" }}
                 value={item.colorid}>
                 <FormControlLabel
                   control={<Checkbox checked={item.chkstatus} onChange={(event) => handleColorChange(event, item)} />}
@@ -206,7 +206,7 @@ return Object.values(size).map((item)=>{
         return Object.values(materialList).map((item) => {
           return (
             <FormGroup>
-              <MenuItem style={{ display: 'flex', flexDirection: "row"}}
+              <MenuItem style={{ display: 'flex', flexDirection: "row" }}
                 value={item.materialid}>
                 <FormControlLabel
                   control={<Checkbox checked={item.chkstatus} onChange={(event) => handleMaterialChange(event, item)} />}
@@ -218,7 +218,7 @@ return Object.values(size).map((item)=>{
         })
 
       case '6':
-        return Object.values(gender).map((item)=>{
+        return Object.values(gender).map((item) => {
           return (
             <FormGroup>
               <MenuItem style={{ display: 'flex', flexDirection: "row" }}
@@ -227,7 +227,7 @@ return Object.values(size).map((item)=>{
                   control={<Checkbox checked={item.chkstatus} onChange={(event) => handleGenderChange(event, item)} />}
                   label={item.gender}
                 />
-        
+
               </MenuItem>
             </FormGroup>
           )
@@ -312,13 +312,13 @@ return Object.values(size).map((item)=>{
     setRefresh(!refresh)
   };
 
-  
+
 
   const attrMenu = () => {
     return listAttributes.map((item) => {
       return (<Button
         onClick={(event) => handleMyMenuClick(event)}
-       
+
         value={item.Key} endIcon={<ArrowDropDownIcon />} aria-controls="simple-menu" aria-haspopup="true">
         {item.Attr}
       </Button>)
@@ -332,15 +332,15 @@ return Object.values(size).map((item)=>{
     fetchAllShapes()
     fetchAllSize()
     fetchAllGender()
-    
+
     displayProducts()
   }, []);
   useEffect(function () {
     fetchAllProducts();
-  },[props.location.state.gender,props.location.state.categoryid]);
+  }, [props.location.state.gender, props.location.state.categoryid]);
   return (
     <div>
-      <Header history={props.history}/>
+      <Header history={props.history} />
       <div style={{ marginTop: 30, display: 'flex', justifyContent: "space-evenly", alignItems: "center" }}>
         {attrMenu()}
         <Menu
@@ -363,10 +363,10 @@ return Object.values(size).map((item)=>{
 
         </Menu>
       </div>
-      <div style={{display:'flex',flexDirection:'row', flexWrap:"wrap",padding:20,justifyContent:'space-evenly'}}>
+      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: "wrap", padding: 20, justifyContent: 'space-evenly' }}>
         {displayProducts()}
       </div>
-        <Footer />
+      <Footer />
     </div>
   )
 }

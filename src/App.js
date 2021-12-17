@@ -35,6 +35,7 @@ import Blogs from './Component/UserInterface/Blogs';
 import Signup from './Component/UserInterface/Signup';
 import UserLogin from './Component/UserInterface/UserLogin';
 import ShopCart from './Component/UserInterface/ShopCart';
+import ShowCart from './Component/UserInterface/ShowCart';
 
 function App(props) {
      return (
@@ -69,7 +70,7 @@ function App(props) {
                          path="/displayprice"
                          props={props.history}
                     />
-                   
+
                     <Route component={AddFrameType}
                          path="/addframetype"
                          props={props.history}
@@ -94,7 +95,7 @@ function App(props) {
                          path="/displaymaterial"
                          props={props.history}
                     />
-                     <Route component={AddShape}
+                    <Route component={AddShape}
                          path="/addshape"
                          props={props.history}
                     />
@@ -126,67 +127,71 @@ function App(props) {
                          path="/displayfinalproduct"
                          props={props.history}
                     />
-       
-               <Route component={ProductPictures}
+
+                    <Route component={ProductPictures}
                          path="/productpictures"
                          props={props.history}
                     />
-               <Route component={DisplayProductPictures}
+                    <Route component={DisplayProductPictures}
                          path="/displayproductpictures"
                          props={props.history}
                     />
-               <Route component={Header}
+                    <Route component={Header}
                          path="/header"
                          props={props.history}
-                    />     
-               <Route component={ProductList}
+                    />
+                    <Route component={ProductList}
                          path="/productlist"
                          props={props.history}
-                    />      
-               <Route component={MainPage}
+                    />
+                    <Route component={MainPage}
                          path="/mainpage"
                          props={props.history}
-                    />     
-               <Route component={DisplayMainPage}
+                    />
+                    <Route component={DisplayMainPage}
                          path="/displaymainpage"
                          props={props.history}
-                    />   
-               <Route component={Test}
+                    />
+                    <Route component={Test}
                          path="/test"
                          props={props.history}
-                    />    
-                <Route component={Home}
+                    />
+                    <Route component={Home}
                          path="/home"
                          props={props.history}
-                    />  
-               <Route component={Footer}
+                    />
+                    <Route component={Footer}
                          path="/footer"
                          props={props.history}
                     />
-               <Route component={ProductView}
+                    <Route component={ProductView}
                          path="/productview"
                          props={props.history}
-                    />     
-               <Route component={OurStory}
+                    />
+                    <Route component={OurStory}
                          path="/ourstory"
                          props={props.history}
-                    />  
-               <Route component={Blogs}
+                    />
+                    <Route component={Blogs}
                          path="/blogs"
                          props={props.history}
-                    />  
-               <Route component={Signup}
+                    />
+                    <Route component={Signup}
                          path="/signup"
                          props={props.history}
-                    />  
-               <Route component={UserLogin}
+                    />
+                    <Route component={UserLogin}
                          path="/userlogin"
                          props={props.history}
-                    />  
-               <Route component={ShopCart}
+                    />
+                    <Route component={ShopCart}
                          path="/shopcart"
                          props={props.history}
-                    />                                 
+                    />
+                    <Route component={ShowCart}
+                         path="/showcart"
+                         props={props.history}
+                    />
                </Router>
           </div>
      );

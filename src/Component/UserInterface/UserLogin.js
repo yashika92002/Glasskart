@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from "./Footer";
 import Header from "./Header";
+import { postData } from "../FetchNodeServices";
 // import { styled } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
@@ -33,6 +34,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function UserInterface(props) {
+
+    const [otp, setOtp] = useState('')
+    const [emailid, setEmailId] = useState('')
+    const [mobileno, setMobileno] = useState(props.location.state.mobileno)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [cpassword, setCpassword] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleClickShowPassword = () => {
         setValues({
@@ -70,8 +79,27 @@ export default function UserInterface(props) {
         showPassword2: false,
     });
 
+    const handleSubmit = async () => {
+        if (password == cpassword) {
+            if (otp == props.location.state.otp) {
+                var body = { emailid: emailid, mobileno: mobileno, username: firstName + " " + lastName, password: password }
+                var result = await postData('userdetails/insertuser', body)
+                alert(result.result)
+            }
+            else {
+
+                alert("!!!!! Incorrect Otp !!!!!")
+            }
+        }
+        else {
+            alert("!!!!! Password Not Match With Confirm Password !!!!!")
+
+        }
+
+    }
+
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        //setValues({ ...values, [prop]: event.target.value });
     };
 
     const handleChange2 = (prop) => (event) => {
@@ -99,17 +127,17 @@ export default function UserInterface(props) {
                                     <p style={{ color: 'grey', fontWeight: 'bold' }}>Please enter your details.</p>
 
                                 </Grid>
-                                <Grid item xs={6}  style={{ display: 'flex', justifyContent:'flex-end', }} >
+                                <Grid item xs={6} style={{ display: 'flex', justifyContent: 'flex-end', }} >
 
                                     <svg class="MuiSvgIcon-root jss5" focusable="false" viewBox="0 0 24 24" aria-hidden="true" variant="filled" aria-label="menu" style={{ fontSize: 60, border: '2px solid black', color: 'black', borderRadius: '50%' }}><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
 
                                 </Grid>
-                                
+
 
                             </Grid>
 
-                          
-                            <Grid cotainer spacing={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',marginLeft:20 ,marginRight:20 }} >
+
+                            <Grid cotainer spacing={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 20, marginRight: 20 }} >
                                 <Grid item xs={6}>
 
                                     <TextField
@@ -118,7 +146,7 @@ export default function UserInterface(props) {
                                         label="Your first name"
                                         // fullWidth
                                         variant="outlined"
-
+                                        onChange={(event) => setFirstName(event.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -129,12 +157,12 @@ export default function UserInterface(props) {
                                         label="Your last name"
                                         // fullWidth
                                         variant="outlined"
-
+                                        onChange={(event) => setLastName(event.target.value)}
                                     />
                                 </Grid>
                             </Grid>
 
-                            <Grid cotainer spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',marginLeft:20,marginRight:20}} >
+                            <Grid cotainer spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 20, marginRight: 20 }} >
                                 <Grid item xs={12}>
 
                                     <TextField
@@ -143,16 +171,16 @@ export default function UserInterface(props) {
                                         label="Your Email-id"
                                         fullWidth
                                         variant="outlined"
-
+                                        onChange={(event) => setEmailId(event.target.value)}
                                     />
                                 </Grid></Grid>
 
-                            <Grid cotainer spacing={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',marginLeft:20,marginTop:20}} >
+                            <Grid cotainer spacing={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 20, marginTop: 20 }} >
                                 <Grid item xs={6}>
 
-                                    <FormControl  sx={{ m: 0, width: '23ch',fontSize:'1rem' }}  variant="outlined">
+                                    <FormControl sx={{ m: 0, width: '23ch', fontSize: '1rem' }} variant="outlined">
                                         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                        <OutlinedInput 
+                                        <OutlinedInput
                                             id="outlined-adornment-password"
                                             type={values.showPassword ? 'text' : 'password'}
                                             value={values.password}
@@ -168,7 +196,7 @@ export default function UserInterface(props) {
                                                         {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                                     </IconButton>
                                                 </InputAdornment>
-                                            }
+                                            } onChange={(event)=>setPassword(event.target.value)}
                                             label="Password"
                                         />
                                     </FormControl>
@@ -176,9 +204,9 @@ export default function UserInterface(props) {
 
                                 <Grid item xs={6} >
 
-                                    <FormControl  sx={{ m: 0, width: '23ch',fontSize:'1rem' }}  variant="outlined" >
-                                        <InputLabel  htmlFor="outlined-adornment-password2">Confirm Password</InputLabel>
-                                        <OutlinedInput 
+                                    <FormControl sx={{ m: 0, width: '23ch', fontSize: '1rem' }} variant="outlined" >
+                                        <InputLabel htmlFor="outlined-adornment-password2">Confirm Password</InputLabel>
+                                        <OutlinedInput
                                             id="outlined-adornment-password2"
                                             type={values2.showPassword2 ? 'text' : 'password'}
                                             value={values2.password2}
@@ -194,18 +222,25 @@ export default function UserInterface(props) {
                                                         {values2.showPassword2 ? <Visibility /> : <VisibilityOff />}
                                                     </IconButton>
                                                 </InputAdornment>
-                                            }
+                                            }onChange={(event)=>setCpassword(event.target.value)}
                                             label="Confirm Password"
                                         />
                                     </FormControl>
 
                                 </Grid>
                             </Grid>
-                            <div style={{ marginLeft: 20,marginRight:20 }}>
-                                <p style={{fontSize:12}}>   Use 8 or more characters with a mix of letters & numbers</p>
+                            <div style={{ marginLeft: 20, marginRight: 20 }}>
+                                <p style={{ fontSize: 12 }}>   Use 8 or more characters with a mix of letters & numbers</p>
                                 <h2 style={{ lineHeight: 0.5, }}>Verify</h2>
-                                <p style={{ lineHeight: 0.5,fontSize:12 }}>We have sent 4 digit OTP on</p></div>
-                            <Grid cotainer spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 20,marginRight:20 }} >
+                                <span style={{ lineHeight: 0.5, fontSize: 12 }}>We have sent 4 digit OTP on &nbsp;</span><span style={{ fontSize: 11, fontColor: 'black' }}><b>+91 {props.location.state.mobileno}</b></span></div>
+                                <div 
+onClick={()=>props.history.push({pathname:'/signup'})}
+style={{fontSize:11,color:'red',textAlign:'right',marginLeft:80,cursor:'pointer'}}>Change</div>
+
+
+                            
+                            
+                            <Grid cotainer spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 20, marginRight: 20 }} >
                                 <Grid item xs={12}>
                                     <TextField
                                         style={{ marginTop: 3 }}
@@ -213,11 +248,12 @@ export default function UserInterface(props) {
                                         label="Enter Your OTP"
                                         fullWidth
                                         variant="outlined"
-
+                                        onChange={(event)=>setOtp(event.target.value)}
+                                        
                                     /></Grid></Grid>
                             <Grid cotainer spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 20 }} >
                                 <Grid item xs={12}>
-                                    <Button variant="contained" fullWidth style={{ color: '#fff', background: '#50526e' }}>
+                                    <Button  onClick={()=>handleSubmit()} variant="contained" fullWidth style={{ color: '#fff', background: '#50526e' }}>
                                         Verify
                                     </Button>
                                 </Grid></Grid>

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Grid from '@mui/material/Grid';
-import { IconContext } from "react-icons";
+import "./styles.css";
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from "./Footer";
 import Header from "./Header";
+import { postData } from '../FetchNodeServices'
+import OtpInput from 'react-otp-input';
 // import { styled } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import { Button } from "@material-ui/core";
-import { fontStyle } from "@mui/system";
+import { Send, ShoppingCart } from '@material-ui/icons'
+import { useDispatch } from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +38,48 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Signup(props) {
     const classes = useStyles();
+    const [otp, setOtp] = useState("")
+    const [mobileno, setMobileNo] = useState('')
+    const [gotp, setGotp] = useState("")
+    const [showOtp, setShowOtp] = useState(false)
+    var dispatch = useDispatch()
+
+    const handleShowCart = () => {
+        if (otp == gotp) {
+            props.history.push({ pathname: "/showcart" })
+
+        }
+        else {
+            alert("invalid otp")
+
+        }
+
+    }
+    const handleSend = async () => {
+        var body = { mobileno: mobileno }
+        var result = await postData("userdetails/checkusermobilenumber", body)
+        if (result.result) {
+            setShowOtp(true)
+            var otpval = parseInt(8999 * Math.random() + 1000)
+            setGotp(otpval)
+            dispatch({ type: 'ADD_USER', payload: [result.data[0].mobileno, result.data[0]] })
+            alert(otpval)
+        }
+        else {
+            var otpval = parseInt(8999 * Math.random() + 1000)
+            alert(otpval)
+            props.history.push({ pathname: "/signup" }, { mobileno: mobileno, otp: otpval })
+
+        }
+
+
+
+    }
+    const handleChangeOtp = (value) => {
+
+        setOtp(value)
+
+    }
     return (
         <div>
             <Header history={props.history} />
@@ -67,19 +109,34 @@ export default function Signup(props) {
                                                     +91 |
                                                 </InputAdornment>
                                             ),
-                                        }}
+                                        }} onChange={(event) => setMobileNo(event.target.value)}
                                         variant="outlined"
                                         fullWidth
                                     />
-                                    <Button variant="contained" endIcon={<SendIcon />} fullWidth style={{color: '#fff', background: '#50526e',marginTop:20}}>
+                                    <Button onClick={() => handleSend()} variant="contained" endIcon={<SendIcon />} fullWidth style={{ color: '#fff', background: '#50526e', marginTop: 20 }}>
                                         Send
                                     </Button>
-                                    <p style={{display:'flex', alignItems:'center',justifyContent:'center',paddingTop:25}}>
-                                    By continuing you agree to our &nbsp; <span style={{color:'red'}}> Terms of Service</span>  </p>
-                                 
-                                    <p style={{display:'flex', alignItems:'center',justifyContent:'center'}}>
-                                     and &nbsp; <span style={{color:'red'}}> Privacy & Legal Policy. </span> </p>
-                                  
+
+                                    <Grid item sm={12}>
+                                        <br />
+                                        {showOtp ? <> <OtpInput
+                                            value={otp}
+                                            onChange={(value) => handleChangeOtp(value)}
+                                            numInputs={4}
+                                            inputStyle="inputStyle"
+                                            separator={<span>-</span>}
+                                        />
+                                            <Button onClick={() => handleShowCart()}
+                                                fullWidth style={{ background: "#50526e", color: '#fff', marginTop: 10 }} variant="contained" color="primary" endIcon={<ShoppingCart />}>Proceed to Cart</Button>
+                                        </>
+                                            : <></>}
+                                    </Grid>
+                                    <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 25 }}>
+                                        By continuing you agree to our &nbsp; <span style={{ color: 'red' }}> Terms of Service</span>  </p>
+
+                                    <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        and &nbsp; <span style={{ color: 'red' }}> Privacy & Legal Policy. </span> </p>
+
                                 </div>
                             </div>
                         </Grid>

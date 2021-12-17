@@ -18,8 +18,9 @@ import { postData, ServerURL } from "../FetchNodeServices";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ArrowBackIos,ArrowForwardIos } from "@material-ui/icons";
+import { ArrowBackIos, ArrowForwardIos } from "@material-ui/icons";
 import ShopCart from "./ShopCart";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function ProductView(props) {
-
+  var cart = useSelector(state => state.cart)
   var product = props.location.state.itemProps
   var item = props.location.state.item
   var picSlider = createRef()
@@ -61,13 +62,14 @@ export default function ProductView(props) {
     slidesToShow: 2,
     slidesToScroll: 1,
   };
-
+  var dispatch = useDispatch()
   const classes = useStyles();
   const [productPicture, setProductPicture] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [expanded2, setExpanded2] = React.useState(false);
   const [expanded3, setExpanded3] = React.useState(false);
   const [selected, setSelected] = useState(props.location.state.selected)
+  const [refresh, setRefresh] = useState(false)
 
   const [picSelected, setPicSelected] = useState("");
 
@@ -177,6 +179,20 @@ export default function ProductView(props) {
     setExpanded(false);
     setExpanded2(false);
   };
+
+  const handleQtyClick = (value) => {
+    var data = { ...product, ...selected, qty: value }
+    //alert(JSON.stringify(data)) 
+    if (value == 0) { dispatch({ type: "REMOVE_CART", payload: [selected.finalproductid] }) }
+    else {
+      dispatch({ type: "ADD_CART", payload: [selected.finalproductid, data] })
+    }
+    setRefresh(!refresh)
+
+
+
+
+  }
 
   const fetchAllProductPictures = async () => {
     var body = { "finalproductid": selected.finalproductid }
@@ -548,11 +564,11 @@ export default function ProductView(props) {
   };
 
   const myhandleChange = (item) => {
-    var { finalproductid, colorid, colorname, price, offerprice, picture } = item
-    setSelected({ finalproductid, colorid, colorname, price, offerprice, productpicture: picture })
+    var { finalproductid, colorid, colorname, price, offerprice, picture, stock } = item
+    setSelected({ finalproductid, colorid, colorname, price, offerprice, picture, stock })
   }
 
-  
+
   return (
     <div>
       <Header history={props.history} />
@@ -568,13 +584,13 @@ export default function ProductView(props) {
         </Breadcrumbs></div>
       <div>
         <Grid container spacing={1} style={{ padding: 20 }}>
-            {/* <p style={{ textAlign: "center" }}>Product View</p> */}
-          <Grid item xs={8} style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-            <ArrowBackIos onClick={()=>picBigSlider.current.slickPrev()} />
-            <Slider {...bigSettings} ref={picBigSlider} style={{width:"95%"}}>
+          {/* <p style={{ textAlign: "center" }}>Product View</p> */}
+          <Grid item xs={8} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <ArrowBackIos onClick={() => picBigSlider.current.slickPrev()} />
+            <Slider {...bigSettings} ref={picBigSlider} style={{ width: "95%" }}>
               {showBigProductPicture()}
             </Slider>
-            <ArrowForwardIos onClick={()=>picBigSlider.current.slickNext()}/>
+            <ArrowForwardIos onClick={() => picBigSlider.current.slickNext()} />
           </Grid>
           <Grid item xs={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div>
@@ -635,7 +651,12 @@ export default function ProductView(props) {
                   </Slider>
                 </div>
               </div>
-              <ShopCart />
+              <div style={{ listStyle: "none", flexDirection: 'column', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ padding: 10, letterSpacing: 1, fontSize: 14, fontWeight: 700 }}>{selected.stock == 0 ? <span style={{ color: 'red' }}>Out of Stock</span> : selected.stock >= 1 && selected.stock <= 3 ? <span style={{ color: 'red' }}>Hurry Only {selected.stock} item(s) is left</span > : <span style={{ color: 'green' }}>Available</span>}</div>
+
+                <ShopCart value={cart.hasOwnProperty(selected.finalproductid) ? cart[selected.finalproductid].qty : 0} onChange={(value) => handleQtyClick(value)} />
+
+              </div>
               <br />
               <Button style={{
                 padding: 12,
@@ -644,7 +665,7 @@ export default function ProductView(props) {
                 textAlign: 'center',
                 fontSize: 18, letterSpacing: 1,
                 borderRadius: 0, fontFamily: 'Helvetica,sans-serif',
-                width: '90%'
+                width: 300
               }}><img src='whatsapp.png' width='25' />Let's Chat</Button>
             </div>
           </Grid>

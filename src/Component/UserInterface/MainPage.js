@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from "react"
-import { TextField, Grid, Button, InputLabel, Avatar ,FormControl,Select} from "@material-ui/core"
+import { TextField, Grid, Button, InputLabel, Avatar, FormControl, Select } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
-import {  isEmpty } from "../Checks";
+import { isEmpty } from "../Checks";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {  postDataAndImage ,postData,getData,ServerURL} from "../FetchNodeServices";
+import { postDataAndImage, postData, getData, ServerURL } from "../FetchNodeServices";
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
-    },
-    subdiv: {
-        width: 600,
-        background: '#f1f2f6',
-        marginTop: 5,
-        padding: 15, height: "auto", borderRadius: 5
-    },
-    input: {
-        display: 'none',
-    }
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20
+  },
+  subdiv: {
+    width: 600,
+    background: '#f1f2f6',
+    marginTop: 5,
+    padding: 15, height: "auto", borderRadius: 5
+  },
+  input: {
+    display: 'none',
+  }
 
 }))
 
 export default function MainPage(props) {
 
-const [position,setPosition] = useState("")
-const [status,setStatus] = useState("")
-const [picture, setPicture] = useState({ filename: '', bytes: '' })
+  const [position, setPosition] = useState("")
+  const [status, setStatus] = useState("")
+  const [picture, setPicture] = useState({ filename: '', bytes: '' })
 
-const handlePicture = (event) => {
+  const handlePicture = (event) => {
     setPicture({ filename: URL.createObjectURL(event.target.files[0]), bytes: event.target.files[0] })
   }
 
@@ -55,12 +55,12 @@ const handlePicture = (event) => {
       err = true;
       toastMessage("Please Enter The Position!")
     }
-   
+
     if (isEmpty(picture.filename)) {
       err = true;
       toastMessage("Please Upload an image!")
     }
-   
+
     if (!err) {
       var formData = new FormData()
       formData.append("position", position)
@@ -88,24 +88,24 @@ const handlePicture = (event) => {
     }
   }
 
-    const classes = useStyles();
-    return (
-        <div className={classes.root}>
-            <div className={classes.subdiv}>
-                <div style={{ width: 480 }}>
-                    <div style={{ fontSize: 20, fontWeight: "bold", letterSpacing: 1, alignItems: "center", justifyContent: "center", display: "flex" }}>
-                        <span><img src="/glassKart9.png" width="40" /></span><span style={{ fontSize: 30 }}>Add MainPage Pictures</span>
-                    </div>
-                </div>
-                <br></br>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <TextField variant="outlined" label="Position" fullWidth
-                        onChange={(event) => setPosition(event.target.value)}
-                        />
-                    </Grid>
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <div className={classes.subdiv}>
+        <div style={{ width: 480 }}>
+          <div style={{ fontSize: 20, fontWeight: "bold", letterSpacing: 1, alignItems: "center", justifyContent: "center", display: "flex" }}>
+            <span><img src="/glassKart9.png" width="40" /></span><span style={{ fontSize: 30 }}>Add MainPage Pictures</span>
+          </div>
+        </div>
+        <br></br>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <TextField variant="outlined" label="Position" fullWidth
+              onChange={(event) => setPosition(event.target.value)}
+            />
+          </Grid>
 
-                   
+
           <Grid item xs={12}>
             <FormControl variant="outlined" fullWidth>
               <InputLabel htmlFor="outlined-age-native-simple">Status</InputLabel>
@@ -125,31 +125,31 @@ const handlePicture = (event) => {
             </FormControl>
           </Grid>
 
-                    <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                            onChange={(event) => handlePicture(event)}
-                        />
-                        <label htmlFor="contained-button-file">
-                            <Button style={{ background: "#22a6b3" }} variant="contained" color="primary" component="span">
-                                Upload MainPage Pictures
-                            </Button>
-                        </label>
-                    </Grid>
-                    <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
-                        <Avatar alt="Remy Sharp"  src={picture.filename}  variant="rounded" style={{ width: 50, height: 50 }} />
-                    </Grid>
+          <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={(event) => handlePicture(event)}
+            />
+            <label htmlFor="contained-button-file">
+              <Button style={{ background: "#22a6b3" }} variant="contained" color="primary" component="span">
+                Upload MainPage Pictures
+              </Button>
+            </label>
+          </Grid>
+          <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
+            <Avatar alt="Remy Sharp" src={picture.filename} variant="rounded" style={{ width: 50, height: 50 }} />
+          </Grid>
 
-                    <Grid item sm={12}>
-                        <Button style={{ background: "#22a6b3" }} fullWidth variant="contained" color="primary" onClick={() => handleSubmit()}>Submit </Button>
-                    </Grid>
-                </Grid>
-            </div>
-            <ToastContainer
+          <Grid item sm={12}>
+            <Button style={{ background: "#22a6b3" }} fullWidth variant="contained" color="primary" onClick={() => handleSubmit()}>Submit </Button>
+          </Grid>
+        </Grid>
+      </div>
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -160,8 +160,8 @@ const handlePicture = (event) => {
         draggable
         pauseOnHover
       />
-        </div>
+    </div>
 
 
-    )
+  )
 }

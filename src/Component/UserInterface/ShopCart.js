@@ -5,24 +5,25 @@ import Remove from '@material-ui/icons/Remove';
 import { Button } from "@material-ui/core";
 export default function ShopCart(props) {
   const [value, setValue] = useState("0")
+
+  useEffect(function () {
+    setValue(props.value)
+  }, [props.value])
   const handleMinus = () => {
-
     var v = parseInt(value)
-
     v--
 
     setValue(v)
 
-
+    props.onChange(v)
 
   }
 
   const handlePlus = () => {
     var v = parseInt(value)
     v++
-    if(v<=5)
     setValue(v)
-
+    props.onChange(v)
 
   }
 
@@ -38,11 +39,11 @@ export default function ShopCart(props) {
       fontSize: 18,
       letterSpacing: 1,
       borderRadius: 0,
-      width: '90%'
+      width: 300
     }}
-      onClick={()=>setValue(parseInt(value)+1)}
+      onClick={() => handlePlus()}
     >Add to Cart</Button></div> :
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 80 }}>
         <Fab onClick={() => handlePlus()} size="small" color="secondary" aria-label="add" style={{ background: "#50526e", }}>
           <AddIcon />
         </Fab>

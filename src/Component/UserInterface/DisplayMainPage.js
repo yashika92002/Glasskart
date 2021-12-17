@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MainPage from "./MainPage";
-import  { AddRounded,AddCircleOutlineRounded } from "@material-ui/icons";
+import { AddRounded, AddCircleOutlineRounded } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -50,14 +50,14 @@ export default function DisplayMainPage(props) {
 
   const [open, setOpen] = React.useState(false);
   const [mainPageId, setMainPageId] = useState("")
-  const [position,setPosition] = useState("")
-  const [status,setStatus] = useState("")
+  const [position, setPosition] = useState("")
+  const [status, setStatus] = useState("")
   const [picture, setPicture] = useState({ filename: '', bytes: '' })
   const [oldPicture, setOldPicture] = useState("")
   const [btnStatus, setBtnStatus] = useState(false)
 
   const handlePicture = (event) => {
-    
+
     setOldPicture(picture.filename)
     setPicture({ filename: URL.createObjectURL(event.target.files[0]), bytes: event.target.files[0] })
     setBtnStatus(true)
@@ -76,9 +76,9 @@ export default function DisplayMainPage(props) {
       progress: 0,
     });
   }
-  const handleCancelPicture = async ()=>{
-    
-    setPicture({filename:oldPicture,bytes:""})
+  const handleCancelPicture = async () => {
+
+    setPicture({ filename: oldPicture, bytes: "" })
     setBtnStatus(false)
   }
 
@@ -106,8 +106,8 @@ export default function DisplayMainPage(props) {
       })
     }
     setOpen(false)
-setBtnStatus(false)
-fetchAllMainPage()
+    setBtnStatus(false)
+    fetchAllMainPage()
   }
 
   const handleSubmit = async () => {
@@ -124,10 +124,10 @@ fetchAllMainPage()
       err = true;
       toastMessage("Please Upload an image!")
     }
-    
+
     if (!err) {
       // alert(mainPageId)
-      var body = { "mainpageid": mainPageId, "position": position , "status": status}
+      var body = { "mainpageid": mainPageId, "position": position, "status": status }
       var result = await postData('mainpage/updatemainpagedata', body)
 
       if (result) {
@@ -150,43 +150,43 @@ fetchAllMainPage()
     }
     fetchAllMainPage()
   }
-  const handleDeleteMainPage=async(data)=>{
-var body={mainpageid:data.mainpageid}
-Swal.fire({
-  imageWidth: 200,
-  imageUrl: '/glasskart9.png',
-  title: 'GlassKart.com',
-  text: 'Are you sure to delete selected MainPage??',
-  showCancelButton: true,
-  confirmButtonText: 'Yes, delete it!',
-  cancelButtonText: 'No, keep it'
-}).then(async(result) => {
-  if (result.isConfirmed) {
-    var result=await postData("mainpage/deletemainpage",body)
-    if(result)
-    Swal.fire(
-      'Deleted!',
-      'Your MainPage has been deleted.',
-      'success'
-    )
-    else
-      Swal.fire(
-        'FAIL!!!!',
-        'Server error fail to delete mainpage',
-        'error'
+  const handleDeleteMainPage = async (data) => {
+    var body = { mainpageid: data.mainpageid }
+    Swal.fire({
+      imageWidth: 200,
+      imageUrl: '/glasskart9.png',
+      title: 'GlassKart.com',
+      text: 'Are you sure to delete selected MainPage??',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        var result = await postData("mainpage/deletemainpage", body)
+        if (result)
+          Swal.fire(
+            'Deleted!',
+            'Your MainPage has been deleted.',
+            'success'
+          )
+        else
+          Swal.fire(
+            'FAIL!!!!',
+            'Server error fail to delete mainpage',
+            'error'
+          )
+
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Your mainpage is safe :)',
+          'error'
         )
-    
-  // For more information about handling dismissals please visit
-  // https://sweetalert2.github.io/#handling-dismissals
-  } else if (result.dismiss === Swal.DismissReason.cancel) {
-    Swal.fire(
-      'Cancelled',
-      'Your mainpage is safe :)',
-      'error'
-    )
-  }
-  fetchAllMainPage()
-})
+      }
+      fetchAllMainPage()
+    })
 
   }
 
@@ -204,7 +204,7 @@ Swal.fire({
   const mainPageDialog = () => {
     return (
       <div>
-      
+
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title"> <div style={{ width: 480 }}>
             <div style={{ fontSize: 20, fontWeight: "bold", letterSpacing: 1, }}>
@@ -225,25 +225,25 @@ Swal.fire({
                   </Grid>
 
                   <Grid item xs={12}>
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="outlined-age-native-simple" >Status</InputLabel>
-              <Select
-                onChange={(event) => setStatus(event.target.value)}
-                native
-                value={status}
-                label="Select Status"
-                inputProps={{
-                  name: 'age',
-                  id: 'outlined-age-native-simple',
-                }}
-              >
-                <option aria-label="None" value="" />
-                <option >Activate</option>
-                <option >Deactivate</option>
-              </Select>
-            </FormControl>
-          </Grid>
-                  
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel htmlFor="outlined-age-native-simple" >Status</InputLabel>
+                      <Select
+                        onChange={(event) => setStatus(event.target.value)}
+                        native
+                        value={status}
+                        label="Select Status"
+                        inputProps={{
+                          name: 'age',
+                          id: 'outlined-age-native-simple',
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        <option >Activate</option>
+                        <option >Deactivate</option>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
 
                   <Grid item xs={6} style={{ alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column" }}>
                     {!btnStatus ? <>
@@ -313,12 +313,12 @@ Swal.fire({
       <MaterialTable
 
 
-      title={
-        <div>
-          
-          <Button variant="contained" color="primary" onClick={()=>props.setComponent(<MainPage/>)} startIcon={<AddCircleOutlineRounded/>}>Add MainPage Pictures</Button>
-        </div>
-      }
+        title={
+          <div>
+
+            <Button variant="contained" color="primary" onClick={() => props.setComponent(<MainPage />)} startIcon={<AddCircleOutlineRounded />}>Add MainPage Pictures</Button>
+          </div>
+        }
         columns={[
           { title: 'ID', field: 'mainpageid' },
           {
